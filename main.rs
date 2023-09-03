@@ -1,6 +1,7 @@
 use std::error::Error;
 use scraper::{Html, Selector};
 use std::collections::LinkedList;
+use std::env;
 
 struct Link {
     depth: i32,
@@ -48,10 +49,15 @@ async fn craw(input: String)  -> Result<&'static str, Box<dyn Error>>{
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
-    let url = String::from("https://news.ycombinator.com/item?id=37351667");
+async fn main()  {
+    let args:Vec<String> = env::args().collect();
+    if args.len() < 1{
+        println!("at least 1 parameter is required");
+        return;
+    }
+    let url = String::from(args[0].as_str());
     // let resp = fetch_html(url).await?;
     craw(url).await?;
 
-    Ok(())
+    // Ok(())
 }
